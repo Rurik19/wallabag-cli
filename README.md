@@ -1,2 +1,2 @@
 # wallabag-cli
-NPM package for wallabag CLI utilite
+CLI package for wallabag api
