@@ -34,3 +34,15 @@ vorpal
         logger.log(`${colors.green('url')} ${' '.repeat(20 - 'url'.length)} ${api.get().url}`);
         callback();
     });
+
+vorpal
+    .command('version', 'get api version')
+    .action(async (arg, cb) => {
+        if (api.get().url === null) {
+            logger.error('empty url');
+        } else {
+            const v = await api.getApiVersion();
+            logger.info(`Api version ${v}`);
+            cb();
+        }
+    });
