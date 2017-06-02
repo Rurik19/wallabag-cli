@@ -1,9 +1,10 @@
 import { WallabagApi } from 'wallabag-api';
-const api = new WallabagApi();
+import { isWebUri } from 'valid-url';
 import Vorpal = require('vorpal');
 import vorpalLog = require('vorpal-log');
 import colors = require('colors/safe');
 
+const api = new WallabagApi();
 const vorpal = new Vorpal();
 
 vorpal
@@ -29,7 +30,11 @@ vorpal
     .command('url [url]', 'show or set wallabag URL ')
     .action((args, callback) => {
         if ( args.url !== undefined ) {
-            api.set({ url: args.url});
+            if (!isWebUri(args.url)) {
+                logger.error('url is incorrect');
+            } else {
+                api.set({ url: args.url});
+            }
         }
         logger.log(`${colors.green('url')} ${' '.repeat(20 - 'url'.length)} ${api.get().url}`);
         callback();

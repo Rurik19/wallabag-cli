@@ -1,10 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const wallabag_api_1 = require("wallabag-api");
-const api = new wallabag_api_1.WallabagApi();
+const valid_url_1 = require("valid-url");
 const Vorpal = require("vorpal");
 const vorpalLog = require("vorpal-log");
 const colors = require("colors/safe");
+const api = new wallabag_api_1.WallabagApi();
 const vorpal = new Vorpal();
 vorpal
     .use(vorpalLog)
@@ -25,7 +26,12 @@ vorpal
     .command('url [url]', 'show or set wallabag URL ')
     .action((args, callback) => {
     if (args.url !== undefined) {
-        api.set({ url: args.url });
+        if (!valid_url_1.isWebUri(args.url)) {
+            logger.error('url is incorrect');
+        }
+        else {
+            api.set({ url: args.url });
+        }
     }
     logger.log(`${colors.green('url')} ${' '.repeat(20 - 'url'.length)} ${api.get().url}`);
     callback();
