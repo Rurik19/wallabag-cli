@@ -18,7 +18,7 @@ const api = new wallabag_api_1.WallabagApi();
 const vorpal = new Vorpal();
 vorpal
     .use(vorpalLog)
-    .delimiter(colors.white('wallabag$'));
+    .delimiter(colors.blue('wallabag$'));
 const logger = vorpal.logger;
 vorpal
     .command('info', 'shows wallabag api data')
@@ -61,9 +61,32 @@ vorpal
 })
     .action((args, cb) => __awaiter(this, void 0, void 0, function* () {
     const checkurl = (args.url !== undefined) ? args.url : (api.get().url !== null) ? api.get().url : '';
-    const v = yield api.getApiVersion(checkurl);
-    logger.info(`Api version ${v}`);
-    cb();
+    return yield api.getApiVersion(checkurl).then((v) => { logger.info(v); });
+}));
+vorpal
+    .command('load <file>', 'load wallabag setup from file')
+    .alias('l')
+    .validate((args) => {
+    const errorMessage = colors.red(`bad file ${args.file}`);
+    try {
+        const stat = fs.statSync(args.file);
+        if (stat.isFile()) {
+            return true;
+        }
+        else {
+            return errorMessage;
+        }
+    }
+    catch (e) {
+        return errorMessage;
+    }
+})
+    .action((args, cb) => __awaiter(this, void 0, void 0, function* () {
+    return yield loadDataFromFile(args.file)
+        .then((data) => {
+        logger.log(JSON.stringify(data));
+    })
+        .then(() => vorpal.exec('info'));
 }));
 if (process.argv.slice(2).length > 0) {
     try {
@@ -77,12 +100,14 @@ else {
     vorpal.show();
 }
 const loadDataFromFile = (file) => __awaiter(this, void 0, void 0, function* () {
-    fs.readFile(file, 'utf8', (err, data) => {
-        if (!err) {
-            return Promise.resolve(JSON.parse(data));
-        }
-        else {
-            return Promise.reject(err);
-        }
+    return new Promise((resolve, reject) => {
+        fs.readFile(file, 'utf8', (err, data) => {
+            if (err) {
+                reject(err);
+            }
+            else {
+                resolve(JSON.parse(data));
+            }
+        });
     });
 });

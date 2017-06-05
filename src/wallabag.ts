@@ -13,7 +13,7 @@ const vorpal = new Vorpal();
 
 vorpal
     .use(vorpalLog)
-    .delimiter(colors.white('wallabag$'));
+    .delimiter(colors.blue('wallabag$'));
 
 const logger = vorpal.logger;
 
@@ -58,9 +58,33 @@ vorpal
     })
     .action(async (args, cb) => {
             const checkurl = (args.url !== undefined) ? args.url : (api.get().url !== null) ? api.get().url : '';
-            const v = await api.getApiVersion(checkurl);
-            logger.info(`Api version ${v}`);
-            cb();
+            return await api.getApiVersion(checkurl).then( (v) => { logger.info(v); });
+    });
+
+vorpal
+    .command('load <file>', 'load wallabag setup from file')
+    .alias('l')
+    .validate( (args) => {
+        const errorMessage = colors.red(`bad file ${args.file}`);
+
+        try {
+            const stat = fs.statSync(args.file);
+            if (stat.isFile()) {
+                return true;
+            } else {
+                return errorMessage;
+            }
+        } catch (e) {
+            return errorMessage;
+        }
+    })
+    .action(async (args, cb) => {
+        return await loadDataFromFile(args.file)
+            .then( (data) => {
+            //    api.set(data);
+            logger.log(JSON.stringify(data));
+             } )
+            .then( () => vorpal.exec('info'));
     });
 
 if (process.argv.slice(2).length > 0) {
@@ -74,11 +98,13 @@ if (process.argv.slice(2).length > 0) {
 }
 
 const loadDataFromFile = async (file: string): Promise<any> => {
-    fs.readFile(file, 'utf8', (err, data) => {
-        if (!err) {
-            return Promise.resolve(JSON.parse(data));
-        } else {
-            return Promise.reject(err);
-        }
+    return new Promise((resolve, reject) => {
+        fs.readFile(file, 'utf8', (err, data) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(JSON.parse(data));
+            }
+        });
     });
 };
