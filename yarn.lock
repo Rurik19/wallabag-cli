@@ -9,8 +9,8 @@
     "@types/node" "*"
 
 "@types/node@*", "@types/node@^7.0.23":
-  version "7.0.23"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.23.tgz#ededfd92e61046c32fcad56ea7e1101733fad4a4"
+  version "7.0.27"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.27.tgz#ba5e1a87aca2b4f5817289615ffe56472927687e"
 
 agent-base@2:
   version "2.1.1"
@@ -263,8 +263,8 @@ mute-stream@0.0.5:
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.5.tgz#8fbfabb0a98a253d3184331f9e8deb7372fac6c0"
 
 node-fetch@^1.6.3:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-1.7.0.tgz#3ff6c56544f9b7fb00682338bb55ee6f54a8a0ef"
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-1.7.1.tgz#899cb3d0a3c92f952c47f1b876f4c8aeabd400d5"
   dependencies:
     encoding "^0.1.11"
     is-stream "^1.0.1"
@@ -423,8 +423,8 @@ vorpal@^1.12.0:
     wrap-ansi "^2.0.0"
 
 wallabag-api@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/wallabag-api/-/wallabag-api-0.1.1.tgz#2186569954b9a52198637fac5a9683cd276e5a53"
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/wallabag-api/-/wallabag-api-0.1.2.tgz#6345750367c8ada79c8b7a57468c620499eff1e5"
   dependencies:
     "@types/node-fetch" "^1.6.7"
     https-proxy-agent "^1.0.0"

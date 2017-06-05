@@ -13,7 +13,7 @@
     "clean": "rimraf bin",
     "lint": "tslint --force --format verbose \"src/**/*.ts\"",
     "build": "yarn run clean && yarn run lint && echo Using TypeScript && tsc --version && tsc --pretty",
-    "run": "yarn run build && node bin/wallabag",
+    "start": "node bin/wallabag",
     "test": "test/test.cmd"
   },
   "dependencies": {

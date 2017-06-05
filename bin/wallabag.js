@@ -9,19 +9,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const wallabag_api_1 = require("wallabag-api");
-const api = new wallabag_api_1.WallabagApi();
+const valid_url_1 = require("valid-url");
 const Vorpal = require("vorpal");
 const vorpalLog = require("vorpal-log");
 const colors = require("colors/safe");
+const fs = require("fs");
+const api = new wallabag_api_1.WallabagApi();
 const vorpal = new Vorpal();
 vorpal
     .use(vorpalLog)
-    .delimiter(colors.white('wallabag$'))
-    .show();
+    .delimiter(colors.white('wallabag$'));
 const logger = vorpal.logger;
-logger.log('This is a wallabag cli program.');
 vorpal
     .command('info', 'shows wallabag api data')
+    .alias('i')
     .action((args, callback) => {
     const info = api.get();
     for (const key of Object.keys(info)) {
@@ -31,23 +32,57 @@ vorpal
 });
 vorpal
     .command('url [url]', 'show or set wallabag URL ')
-    .action((args, callback) => {
-    if (args.url !== undefined) {
-        api.set({ url: args.url });
+    .alias('u')
+    .validate((args) => {
+    if ((args.url === undefined) || valid_url_1.isWebUri(args.url)) {
+        return true;
     }
+    else {
+        return colors.red(`url ${args.url} is incorrect`);
+    }
+})
+    .action((args, callback) => {
+    api.set({ url: args.url });
     logger.log(`${colors.green('url')} ${' '.repeat(20 - 'url'.length)} ${api.get().url}`);
     callback();
 });
 vorpal
-    .command('version', 'get api version')
-    .action((arg, cb) => __awaiter(this, void 0, void 0, function* () {
-    if (api.get().url === null) {
-        logger.error('empty url');
+    .command('version [url]', 'get api version')
+    .alias('v')
+    .validate((args) => {
+    const checkurl = (args.url !== undefined) ? args.url : (api.get().url !== null) ? api.get().url : '';
+    if ((checkurl === '')) {
+        return 'empty url';
     }
-    else {
-        const v = yield api.getApiVersion();
-        logger.info(colors.green(`Api version ${v}`));
-        cb();
+    if (!valid_url_1.isWebUri(checkurl)) {
+        return colors.red(`incorrect URL: ${checkurl} `);
     }
+    return true;
+})
+    .action((args, cb) => __awaiter(this, void 0, void 0, function* () {
+    const checkurl = (args.url !== undefined) ? args.url : (api.get().url !== null) ? api.get().url : '';
+    const v = yield api.getApiVersion(checkurl);
+    logger.info(`Api version ${v}`);
+    cb();
 }));
-
+if (process.argv.slice(2).length > 0) {
+    try {
+        vorpal.parse(process.argv);
+    }
+    catch (e) {
+        process.exit(1);
+    }
+}
+else {
+    vorpal.show();
+}
+const loadDataFromFile = (file) => __awaiter(this, void 0, void 0, function* () {
+    fs.readFile(file, 'utf8', (err, data) => {
+        if (!err) {
+            return Promise.resolve(JSON.parse(data));
+        }
+        else {
+            return Promise.reject(err);
+        }
+    });
+});
