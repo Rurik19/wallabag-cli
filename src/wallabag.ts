@@ -70,51 +70,47 @@ vorpal
     });
 
 vorpal
-    .command('load [file]', 'load wallabag setup from file. default filename is "wallabag.json"')
+    .command('load', 'load wallabag setup from file or localStorage. default: file "wallabag.json"')
+    .option('-f, --file <filename>', 'file to load options from')
+    .option('-s, --silent', 'don\'t show options after load' )
     .alias('l')
-    .validate( (args) => {
-        const errorMessage = colors.red(`bad file ${args.file}`);
-        const filename = args.file || defaultFileName;
-        try {
-            const stat = fs.statSync(filename);
-            if (stat.isFile()) {
-                return true;
-            } else {
-                return errorMessage;
-            }
-        } catch (e) {
-            return errorMessage;
-        }
-    })
+    .validate( args => checkFile(args.options.filename || defaultFileName) )
     .action(async (args, cb) => {
-        return await loadDataFromFile(args.file || defaultFileName)
-            .then( (data) => {
-                const ldata = {...defaultData };
-                for (const key of Object.keys(data)) {
-                   if (key in ldata) {
-                       ldata[key] = data[key];
-                   } else {
-                       if (key in recodeObj) {
-                           ldata[recodeObj[key]] = data[key];
-                       }
-                   }
-                }
-                api.set(ldata);
-                showInfo();
-             } );
-    });
+        const rawData = await loadDataFromFile(args.options.filename || defaultFileName);
+        api.set(normalizeData(rawData));
+        if ( ! args.options.silent ) { showInfo(); }
+     });
 
-if (process.argv.slice(2).length > 0) {
+function checkFile(fileName: string): boolean {
+    const errorMessage = `bad file ${fileName}`;
     try {
-        vorpal.parse(process.argv);
+        const stat = fs.statSync(fileName);
+        if (stat.isFile()) {
+            return true;
+        } else {
+            logger.error(errorMessage);
+        }
     } catch (e) {
-        process.exit(1);
+        logger.error(errorMessage);
     }
-} else {
-    vorpal.show();
+    return false;
 }
 
-const loadDataFromFile = async (file: string): Promise<any> => {
+function normalizeData(data: object): object {
+    const ldata = {...defaultData };
+    for (const key of Object.keys(data)) {
+        if (key in ldata) {
+            ldata[key] = data[key];
+        } else {
+            if (key in recodeObj) {
+                ldata[recodeObj[key]] = data[key];
+            }
+        }
+    }
+    return ldata;
+}
+
+async function loadDataFromFile(file: string): Promise<any> {
     return new Promise((resolve, reject) => {
         fs.readFile(file, 'utf8', (err, data) => {
             if (err) {
@@ -124,9 +120,9 @@ const loadDataFromFile = async (file: string): Promise<any> => {
             }
         });
     });
-};
+}
 
-const showInfo = () => {
+function showInfo(): void  {
         const info = api.get() as object;
         for (const key of Object.keys(info)) {
             let showData = info[key];
@@ -136,4 +132,15 @@ const showInfo = () => {
             }
             logger.log(`${colors.green(key)} ${' '.repeat(20 - key.length)} ${showData}`);
         }
-};
+}
+
+// ------ Entry points --------
+if (process.argv.slice(2).length > 0) {
+    try {
+        vorpal.parse(process.argv);
+    } catch (e) {
+        process.exit(1);
+    }
+} else {
+    vorpal.show();
+}

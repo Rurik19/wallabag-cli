@@ -13,6 +13,7 @@
     ],
     "quotemark": [
       "single"
-    ]
+    ],
+    "arrow-parens": false
   }
 }

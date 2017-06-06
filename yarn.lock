@@ -9,8 +9,8 @@
     "@types/node" "*"
 
 "@types/node@*", "@types/node@^7.0.23":
-  version "7.0.27"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.27.tgz#ba5e1a87aca2b4f5817289615ffe56472927687e"
+  version "7.0.28"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.28.tgz#3a8c62b718a73bbb89ede4aba5ab12c8f822c36e"
 
 agent-base@2:
   version "2.1.1"

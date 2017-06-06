@@ -72,42 +72,75 @@ vorpal
     return yield api.getApiVersion(checkurl).then((v) => { logger.info(v); });
 }));
 vorpal
-    .command('load [file]', 'load wallabag setup from file. default filename is "wallabag.json"')
+    .command('load', 'load wallabag setup from file or localStorage. default: file "wallabag.json"')
+    .option('-f, --file <filename>', 'file to load options from')
+    .option('-s, --silent', 'don\'t show options after load')
     .alias('l')
     .validate((args) => {
-    const errorMessage = colors.red(`bad file ${args.file}`);
-    const filename = args.file || defaultFileName;
+    logger.debug(JSON.stringify(args));
+    const errorMessage = `bad file ${args.file}`;
+    const fileName = args.options.filename || defaultFileName;
     try {
-        const stat = fs.statSync(filename);
+        const stat = fs.statSync(fileName);
         if (stat.isFile()) {
             return true;
         }
         else {
-            return errorMessage;
+            logger.error(errorMessage);
+            return false;
         }
     }
     catch (e) {
-        return errorMessage;
+        logger.error(errorMessage);
+        return false;
     }
 })
     .action((args, cb) => __awaiter(this, void 0, void 0, function* () {
-    return yield loadDataFromFile(args.file || defaultFileName)
-        .then((data) => {
-        const ldata = Object.assign({}, wallabag_api_1.defaultData);
-        for (const key of Object.keys(data)) {
-            if (key in ldata) {
-                ldata[key] = data[key];
-            }
-            else {
-                if (key in recodeObj) {
-                    ldata[recodeObj[key]] = data[key];
-                }
+    const rawData = yield loadDataFromFile(args.options.filename || defaultFileName);
+    api.set(normalizeData(rawData));
+    if (!args.options.silent) {
+        showInfo();
+    }
+}));
+function normalizeData(data) {
+    const ldata = Object.assign({}, wallabag_api_1.defaultData);
+    for (const key of Object.keys(data)) {
+        if (key in ldata) {
+            ldata[key] = data[key];
+        }
+        else {
+            if (key in recodeObj) {
+                ldata[recodeObj[key]] = data[key];
             }
         }
-        api.set(ldata);
-        showInfo();
+    }
+    return ldata;
+}
+function loadDataFromFile(file) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return new Promise((resolve, reject) => {
+            fs.readFile(file, 'utf8', (err, data) => {
+                if (err) {
+                    reject(err);
+                }
+                else {
+                    resolve(JSON.parse(data));
+                }
+            });
+        });
     });
-}));
+}
+function showInfo() {
+    const info = api.get();
+    for (const key of Object.keys(info)) {
+        let showData = info[key];
+        if (((key === "expireDate") || (key === "refreshExpireDate")) && (info[key] !== null)) {
+            const date = new Date(info[key]);
+            showData = `${date.toDateString()} ${date.toTimeString()}`;
+        }
+        logger.log(`${colors.green(key)} ${' '.repeat(20 - key.length)} ${showData}`);
+    }
+}
 if (process.argv.slice(2).length > 0) {
     try {
         vorpal.parse(process.argv);
@@ -119,26 +152,3 @@ if (process.argv.slice(2).length > 0) {
 else {
     vorpal.show();
 }
-const loadDataFromFile = (file) => __awaiter(this, void 0, void 0, function* () {
-    return new Promise((resolve, reject) => {
-        fs.readFile(file, 'utf8', (err, data) => {
-            if (err) {
-                reject(err);
-            }
-            else {
-                resolve(JSON.parse(data));
-            }
-        });
-    });
-});
-const showInfo = () => {
-    const info = api.get();
-    for (const key of Object.keys(info)) {
-        let showData = info[key];
-        if (((key === "expireDate") || (key === "refreshExpireDate")) && (info[key] !== null)) {
-            const date = new Date(info[key]);
-            showData = `${date.toDateString()} ${date.toTimeString()}`;
-        }
-        logger.log(`${colors.green(key)} ${' '.repeat(20 - key.length)} ${showData}`);
-    }
-};
