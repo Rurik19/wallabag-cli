@@ -16,18 +16,26 @@ const colors = require("colors/safe");
 const fs = require("fs");
 const api = new wallabag_api_1.WallabagApi();
 const vorpal = new Vorpal();
+const recodeObj = {
+    Url: "url",
+    ApiVersion: "version",
+    ClientId: "clientId",
+    ClientSecret: "clientSecret",
+    ApiToken: "applicationToken",
+    RefreshToken: "refreshToken",
+    ExpireDateMs: "expireDate"
+};
+const defaultFileName = 'wallabag.json';
 vorpal
     .use(vorpalLog)
-    .delimiter(colors.blue('wallabag$'));
+    .delimiter(colors.blue('wallabag$'))
+    .history('wallabag-cli');
 const logger = vorpal.logger;
 vorpal
     .command('info', 'shows wallabag api data')
     .alias('i')
     .action((args, callback) => {
-    const info = api.get();
-    for (const key of Object.keys(info)) {
-        logger.log(`${colors.green(key)} ${' '.repeat(20 - key.length)} ${info[key]}`);
-    }
+    showInfo();
     callback();
 });
 vorpal
@@ -64,12 +72,13 @@ vorpal
     return yield api.getApiVersion(checkurl).then((v) => { logger.info(v); });
 }));
 vorpal
-    .command('load <file>', 'load wallabag setup from file')
+    .command('load [file]', 'load wallabag setup from file. default filename is "wallabag.json"')
     .alias('l')
     .validate((args) => {
     const errorMessage = colors.red(`bad file ${args.file}`);
+    const filename = args.file || defaultFileName;
     try {
-        const stat = fs.statSync(args.file);
+        const stat = fs.statSync(filename);
         if (stat.isFile()) {
             return true;
         }
@@ -82,11 +91,22 @@ vorpal
     }
 })
     .action((args, cb) => __awaiter(this, void 0, void 0, function* () {
-    return yield loadDataFromFile(args.file)
+    return yield loadDataFromFile(args.file || defaultFileName)
         .then((data) => {
-        logger.log(JSON.stringify(data));
-    })
-        .then(() => vorpal.exec('info'));
+        const ldata = Object.assign({}, wallabag_api_1.defaultData);
+        for (const key of Object.keys(data)) {
+            if (key in ldata) {
+                ldata[key] = data[key];
+            }
+            else {
+                if (key in recodeObj) {
+                    ldata[recodeObj[key]] = data[key];
+                }
+            }
+        }
+        api.set(ldata);
+        showInfo();
+    });
 }));
 if (process.argv.slice(2).length > 0) {
     try {
@@ -111,3 +131,14 @@ const loadDataFromFile = (file) => __awaiter(this, void 0, void 0, function* () 
         });
     });
 });
+const showInfo = () => {
+    const info = api.get();
+    for (const key of Object.keys(info)) {
+        let showData = info[key];
+        if (((key === "expireDate") || (key === "refreshExpireDate")) && (info[key] !== null)) {
+            const date = new Date(info[key]);
+            showData = `${date.toDateString()} ${date.toTimeString()}`;
+        }
+        logger.log(`${colors.green(key)} ${' '.repeat(20 - key.length)} ${showData}`);
+    }
+};

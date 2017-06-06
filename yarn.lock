@@ -422,9 +422,9 @@ vorpal@^1.12.0:
     strip-ansi "^3.0.0"
     wrap-ansi "^2.0.0"
 
-wallabag-api@^0.1.1:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/wallabag-api/-/wallabag-api-0.1.2.tgz#6345750367c8ada79c8b7a57468c620499eff1e5"
+wallabag-api@^0.1.5:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/wallabag-api/-/wallabag-api-0.1.5.tgz#52f9b84715341be6b08df76745051c88404949d7"
   dependencies:
     "@types/node-fetch" "^1.6.7"
     https-proxy-agent "^1.0.0"

@@ -1,4 +1,4 @@
-import { WallabagApi } from 'wallabag-api';
+import { WallabagApi, defaultData } from 'wallabag-api';
 import { isWebUri } from 'valid-url';
 
 import Vorpal = require('vorpal');
@@ -10,10 +10,21 @@ const api = new WallabagApi();
 const vorpal = new Vorpal();
 
 // const loadedData = loadDataFromFile('./wallabag.json');
+const recodeObj = {
+    Url: "url",
+    ApiVersion: "version",
+    ClientId: "clientId",
+    ClientSecret: "clientSecret",
+    ApiToken: "applicationToken",
+    RefreshToken: "refreshToken",
+    ExpireDateMs: "expireDate"
+};
+const defaultFileName = 'wallabag.json';
 
 vorpal
     .use(vorpalLog)
-    .delimiter(colors.blue('wallabag$'));
+    .delimiter(colors.blue('wallabag$'))
+    .history('wallabag-cli');
 
 const logger = vorpal.logger;
 
@@ -24,10 +35,7 @@ vorpal
     .command('info', 'shows wallabag api data')
     .alias('i')
     .action((args, callback) => {
-        const info = api.get() as object;
-        for (const key of Object.keys(info)) {
-            logger.log(`${colors.green(key)} ${' '.repeat(20 - key.length)} ${info[key]}`);
-        }
+        showInfo();
         callback();
     });
 
@@ -62,13 +70,13 @@ vorpal
     });
 
 vorpal
-    .command('load <file>', 'load wallabag setup from file')
+    .command('load [file]', 'load wallabag setup from file. default filename is "wallabag.json"')
     .alias('l')
     .validate( (args) => {
         const errorMessage = colors.red(`bad file ${args.file}`);
-
+        const filename = args.file || defaultFileName;
         try {
-            const stat = fs.statSync(args.file);
+            const stat = fs.statSync(filename);
             if (stat.isFile()) {
                 return true;
             } else {
@@ -79,12 +87,21 @@ vorpal
         }
     })
     .action(async (args, cb) => {
-        return await loadDataFromFile(args.file)
+        return await loadDataFromFile(args.file || defaultFileName)
             .then( (data) => {
-            //    api.set(data);
-            logger.log(JSON.stringify(data));
-             } )
-            .then( () => vorpal.exec('info'));
+                const ldata = {...defaultData };
+                for (const key of Object.keys(data)) {
+                   if (key in ldata) {
+                       ldata[key] = data[key];
+                   } else {
+                       if (key in recodeObj) {
+                           ldata[recodeObj[key]] = data[key];
+                       }
+                   }
+                }
+                api.set(ldata);
+                showInfo();
+             } );
     });
 
 if (process.argv.slice(2).length > 0) {
@@ -107,4 +124,16 @@ const loadDataFromFile = async (file: string): Promise<any> => {
             }
         });
     });
+};
+
+const showInfo = () => {
+        const info = api.get() as object;
+        for (const key of Object.keys(info)) {
+            let showData = info[key];
+            if ( ((key === "expireDate") || (key === "refreshExpireDate")) && (info[key] !== null) ) {
+              const date = new Date(info[key]);
+              showData = `${date.toDateString()} ${date.toTimeString()}`;
+            }
+            logger.log(`${colors.green(key)} ${' '.repeat(20 - key.length)} ${showData}`);
+        }
 };
