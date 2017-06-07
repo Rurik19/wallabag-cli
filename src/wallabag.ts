@@ -6,6 +6,9 @@ import vorpalLog = require('vorpal-log');
 import colors = require('colors/safe');
 import fs = require('fs');
 
+import inquirer = require('inquirer');
+
+const prompt = inquirer.prompt;
 const api = new WallabagApi();
 const vorpal = new Vorpal();
 
@@ -82,7 +85,9 @@ vorpal
     .option('-f, --file <filename>', 'file to load options from')
     .option('-y, --yes', 'overwrite existing file')
     .alias('s')
-    .validate( args => true )
+    .validate( args => {
+        return args.options.yes || checkFileToWrite(args.options.filename || defaultFileName);
+    })
     .action(async (args, cb) => {
         cb();
     });
@@ -100,6 +105,26 @@ function checkFile(fileName: string): boolean {
         logger.error(errorMessage);
     }
     return false;
+}
+
+async function checkFileToWrite(fileName: string): Promise<boolean> {
+    try {
+        const stat = fs.statSync(fileName);
+        if (stat.isFile()) {
+          const answer = await prompt({
+              type: 'confirm',
+              name: 'overwrite',
+              message: `file ${fileName} exists. Overwrite it?`
+            });
+          return answer.overwrite;
+        } else {
+            logger.error(`file ${fileName} exists and is not a file`);
+            return false;
+        }
+    } catch (e) {
+       logger.error(e.message);
+       return true;
+    }
 }
 
 function normalizeData(data: object): object {

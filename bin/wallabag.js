@@ -14,6 +14,8 @@ const Vorpal = require("vorpal");
 const vorpalLog = require("vorpal-log");
 const colors = require("colors/safe");
 const fs = require("fs");
+const inquirer = require("inquirer");
+const prompt = inquirer.prompt;
 const api = new wallabag_api_1.WallabagApi();
 const vorpal = new Vorpal();
 const recodeObj = {
@@ -76,25 +78,7 @@ vorpal
     .option('-f, --file <filename>', 'file to load options from')
     .option('-s, --silent', 'don\'t show options after load')
     .alias('l')
-    .validate((args) => {
-    logger.debug(JSON.stringify(args));
-    const errorMessage = `bad file ${args.file}`;
-    const fileName = args.options.filename || defaultFileName;
-    try {
-        const stat = fs.statSync(fileName);
-        if (stat.isFile()) {
-            return true;
-        }
-        else {
-            logger.error(errorMessage);
-            return false;
-        }
-    }
-    catch (e) {
-        logger.error(errorMessage);
-        return false;
-    }
-})
+    .validate(args => checkFile(args.options.filename || defaultFileName))
     .action((args, cb) => __awaiter(this, void 0, void 0, function* () {
     const rawData = yield loadDataFromFile(args.options.filename || defaultFileName);
     api.set(normalizeData(rawData));
@@ -102,6 +86,56 @@ vorpal
         showInfo();
     }
 }));
+vorpal
+    .command('save', 'save wallabag setup to file or localStorage. default: file "wallabag.json"')
+    .option('-f, --file <filename>', 'file to load options from')
+    .option('-y, --yes', 'overwrite existing file')
+    .alias('s')
+    .validate(args => {
+    return args.options.yes || checkFileToWrite(args.options.filename || defaultFileName);
+})
+    .action((args, cb) => __awaiter(this, void 0, void 0, function* () {
+    cb();
+}));
+function checkFile(fileName) {
+    const errorMessage = `bad file ${fileName}`;
+    try {
+        const stat = fs.statSync(fileName);
+        if (stat.isFile()) {
+            return true;
+        }
+        else {
+            logger.error(errorMessage);
+        }
+    }
+    catch (e) {
+        logger.error(errorMessage);
+    }
+    return false;
+}
+function checkFileToWrite(fileName) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const stat = fs.statSync(fileName);
+            if (stat.isFile()) {
+                const answer = yield prompt({
+                    type: 'confirm',
+                    name: 'overwrite',
+                    message: `file ${fileName} exists. Overwrite it?`
+                });
+                return answer.overwrite;
+            }
+            else {
+                logger.error(`file ${fileName} exists and is not a file`);
+                return false;
+            }
+        }
+        catch (e) {
+            logger.error(e.message);
+            return true;
+        }
+    });
+}
 function normalizeData(data) {
     const ldata = Object.assign({}, wallabag_api_1.defaultData);
     for (const key of Object.keys(data)) {
