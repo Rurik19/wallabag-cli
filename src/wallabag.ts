@@ -9,7 +9,6 @@ import fs = require('fs');
 const api = new WallabagApi();
 const vorpal = new Vorpal();
 
-// const loadedData = loadDataFromFile('./wallabag.json');
 const recodeObj = {
     Url: "url",
     ApiVersion: "version",
@@ -28,9 +27,6 @@ vorpal
 
 const logger = vorpal.logger;
 
-// logger.log('This is a wallabag cli program.');
-
-// if (loadedData !== null)  { logger.log('Data are loaded from the wallabag.json file.'); }
 vorpal
     .command('info', 'shows wallabag api data')
     .alias('i')
