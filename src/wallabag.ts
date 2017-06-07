@@ -81,6 +81,16 @@ vorpal
         if ( ! args.options.silent ) { showInfo(); }
      });
 
+vorpal
+    .command('save', 'save wallabag setup to file or localStorage. default: file "wallabag.json"')
+    .option('-f, --file <filename>', 'file to load options from')
+    .option('-y, --yes', 'overwrite existing file')
+    .alias('s')
+    .validate( args => true )
+    .action(async (args, cb) => {
+        cb();
+    });
+
 function checkFile(fileName: string): boolean {
     const errorMessage = `bad file ${fileName}`;
     try {
