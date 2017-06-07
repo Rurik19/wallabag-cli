@@ -85,12 +85,29 @@ vorpal
     .option('-f, --file <filename>', 'file to load options from')
     .option('-y, --yes', 'overwrite existing file')
     .alias('s')
-    .validate( args => {
-        return args.options.yes || checkFileToWrite(args.options.filename || defaultFileName);
-    })
     .action(async (args, cb) => {
-        cb();
+        const fileName = args.filename || defaultFileName;
+        if ((args.options.yes) || (!fs.existsSync(fileName))) {
+           return await saveFile(fileName);
+        }
+        const answer = await prompt({
+            type: 'confirm',
+            name: 'overwrite',
+            message: `file ${fileName} exists. Overwrite it?`
+        });
+        if (answer.overwrite) {
+          return await saveFile(fileName);
+        }
     });
+//
+async function saveFile(filename: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+        fs.writeFile(filename, JSON.stringify(api.get()), (err) => {
+            if (err) { return reject(err); }
+            return resolve();
+        });
+    });
+}
 
 function checkFile(fileName: string): boolean {
     const errorMessage = `bad file ${fileName}`;
@@ -105,26 +122,6 @@ function checkFile(fileName: string): boolean {
         logger.error(errorMessage);
     }
     return false;
-}
-
-async function checkFileToWrite(fileName: string): Promise<boolean> {
-    try {
-        const stat = fs.statSync(fileName);
-        if (stat.isFile()) {
-          const answer = await prompt({
-              type: 'confirm',
-              name: 'overwrite',
-              message: `file ${fileName} exists. Overwrite it?`
-            });
-          return answer.overwrite;
-        } else {
-            logger.error(`file ${fileName} exists and is not a file`);
-            return false;
-        }
-    } catch (e) {
-       logger.error(e.message);
-       return true;
-    }
 }
 
 function normalizeData(data: object): object {
