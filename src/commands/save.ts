@@ -27,11 +27,11 @@ const prompt = inquirer.prompt;
     })
 )(vorpal);
 
-async function saveFile(filename: string): Promise<any> {
+const saveFile = async (filename: string): Promise<any> {
     return new Promise((resolve, reject) => {
         fs.writeFile(filename, JSON.stringify(api.get()), (err) => {
             if (err) { return reject(err); }
             return resolve();
         });
     });
-}
+};

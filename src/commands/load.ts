@@ -17,7 +17,7 @@ import { recodeObj, defaultFileName } from '../constants';
      })
 )(vorpal);
 
-function checkFile(fileName: string): boolean {
+const checkFile = (fileName: string): boolean => {
     const errorMessage = `bad file ${fileName}`;
     try {
         const stat = fs.statSync(fileName);
@@ -30,9 +30,9 @@ function checkFile(fileName: string): boolean {
         logger.error(errorMessage);
     }
     return false;
-}
+};
 
-function normalizeData(data: object): object {
+const normalizeData = (data: object): object => {
     const ldata = {...defaultData };
     for (const key of Object.keys(data)) {
         if (key in ldata) {
@@ -46,7 +46,7 @@ function normalizeData(data: object): object {
     return ldata;
 }
 
-async function loadDataFromFile(file: string): Promise<any> {
+const loadDataFromFile = async (file: string): Promise<any> =>  {
     return new Promise((resolve, reject) => {
         fs.readFile(file, 'utf8', (err, data) => {
             if (err) {
