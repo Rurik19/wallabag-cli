@@ -19,19 +19,17 @@ require("./commands/version");
 require("./commands/load");
 require("./commands/save");
 require("./commands/url");
-const loadLastSetup = () => {
-    try {
-        const lastSetup = vorpal.localStorage.getItem('lastSetup');
-        if (lastSetup) {
-            api.set(JSON.parse(lastSetup));
-            logger.info(`loaded last setup for ${api.get().url}`);
-        }
+require("./commands/add");
+try {
+    const lastSetup = vorpal.localStorage.getItem('lastSetup');
+    if (lastSetup) {
+        api.set(JSON.parse(lastSetup));
+        logger.info(`loaded last setup for ${api.get().url}`);
     }
-    catch (error) {
-        logger.error(error.message);
-    }
-};
-loadLastSetup();
+}
+catch (error) {
+    logger.error(error.message);
+}
 if (process.argv.slice(2).length > 0) {
     try {
         vorpal.parse(process.argv);

@@ -20,6 +20,7 @@ import './commands/version';
 import './commands/load';
 import './commands/save';
 import './commands/url';
+import './commands/add';
 
 // ----- actions before user entrypoints ---------
 try {

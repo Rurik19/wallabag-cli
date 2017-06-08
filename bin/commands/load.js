@@ -18,9 +18,9 @@ const constants_1 = require("../constants");
     .option('-f, --file <filename>', 'file to load options from')
     .option('-s, --silent', 'don\'t show options after load')
     .alias('l')
-    .validate(args => checkFile(args.options.filename || constants_1.defaultFileName))
+    .validate(args => checkFile(args.options.file || constants_1.defaultFileName))
     .action((args, cb) => __awaiter(this, void 0, void 0, function* () {
-    const rawData = yield loadDataFromFile(args.options.filename || constants_1.defaultFileName);
+    const rawData = yield loadDataFromFile(args.options.file || constants_1.defaultFileName);
     const normData = normalizeData(rawData);
     wallabag_1.api.set(normData);
     wallabag_1.vorpal.localStorage.setItem('lastSetup', JSON.stringify(normData));

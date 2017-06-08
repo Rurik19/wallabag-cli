@@ -9,9 +9,9 @@ import { recodeObj, defaultFileName } from '../constants';
     .option('-f, --file <filename>', 'file to load options from')
     .option('-s, --silent', 'don\'t show options after load' )
     .alias('l')
-    .validate( args => checkFile(args.options.filename || defaultFileName) )
+    .validate( args => checkFile(args.options.file || defaultFileName) )
     .action(async (args, cb) => {
-        const rawData = await loadDataFromFile(args.options.filename || defaultFileName);
+        const rawData = await loadDataFromFile(args.options.file || defaultFileName);
         const normData = normalizeData(rawData);
         api.set(normData);
         vorpal.localStorage.setItem('lastSetup', JSON.stringify(normData));
