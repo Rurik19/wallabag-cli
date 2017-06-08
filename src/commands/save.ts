@@ -27,7 +27,7 @@ const prompt = inquirer.prompt;
     })
 )(vorpal);
 
-const saveFile = async (filename: string): Promise<any> {
+const saveFile = async (filename: string): Promise<any> => {
     return new Promise((resolve, reject) => {
         fs.writeFile(filename, JSON.stringify(api.get()), (err) => {
             if (err) { return reject(err); }
