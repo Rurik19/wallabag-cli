@@ -21,19 +21,16 @@ import './commands/load';
 import './commands/save';
 import './commands/url';
 
-const loadLastSetup = () => {
-    try {
-        const lastSetup = vorpal.localStorage.getItem('lastSetup');
-        if (lastSetup) {
-             api.set(JSON.parse(lastSetup));
-             logger.info(`loaded last setup for ${api.get().url}`);
-        }
-    } catch (error) {
-        logger.error(error.message);
+// ----- actions before user entrypoints ---------
+try {
+    const lastSetup = vorpal.localStorage.getItem('lastSetup');
+    if (lastSetup) {
+            api.set(JSON.parse(lastSetup));
+            logger.info(`loaded last setup for ${api.get().url}`);
     }
-};
-
-loadLastSetup();
+} catch (error) {
+    logger.error(error.message);
+}
 
 // ------ Entry points --------
 if (process.argv.slice(2).length > 0) {
