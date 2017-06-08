@@ -1,6 +1,6 @@
 {
   "name": "wallabag-cli",
-  "version": "0.0.3",
+  "version": "0.0.6",
   "main": "./bin/wallabag.js",
   "bin": "./bin/wallabag.js",
   "license": "MIT",
