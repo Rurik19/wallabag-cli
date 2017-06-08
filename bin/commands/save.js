@@ -33,15 +33,13 @@ const prompt = inquirer.prompt;
         return yield saveFile(fileName);
     }
 })))(wallabag_1.vorpal);
-function saveFile(filename) {
-    return __awaiter(this, void 0, void 0, function* () {
-        return new Promise((resolve, reject) => {
-            fs.writeFile(filename, JSON.stringify(wallabag_1.api.get()), (err) => {
-                if (err) {
-                    return reject(err);
-                }
-                return resolve();
-            });
+const saveFile = (filename) => __awaiter(this, void 0, void 0, function* () {
+    return new Promise((resolve, reject) => {
+        fs.writeFile(filename, JSON.stringify(wallabag_1.api.get()), (err) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve();
         });
     });
-}
+});

@@ -12,7 +12,9 @@ import { recodeObj, defaultFileName } from '../constants';
     .validate( args => checkFile(args.options.filename || defaultFileName) )
     .action(async (args, cb) => {
         const rawData = await loadDataFromFile(args.options.filename || defaultFileName);
-        api.set(normalizeData(rawData));
+        const normData = normalizeData(rawData);
+        api.set(normData);
+        vorpal.localStorage.setItem('lastSetup', JSON.stringify(normData));
         if ( ! args.options.silent ) { showInfo(); }
      })
 )(vorpal);

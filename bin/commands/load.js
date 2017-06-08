@@ -21,12 +21,14 @@ const constants_1 = require("../constants");
     .validate(args => checkFile(args.options.filename || constants_1.defaultFileName))
     .action((args, cb) => __awaiter(this, void 0, void 0, function* () {
     const rawData = yield loadDataFromFile(args.options.filename || constants_1.defaultFileName);
-    wallabag_1.api.set(normalizeData(rawData));
+    const normData = normalizeData(rawData);
+    wallabag_1.api.set(normData);
+    wallabag_1.vorpal.localStorage.setItem('lastSetup', JSON.stringify(normData));
     if (!args.options.silent) {
         info_1.showInfo();
     }
 })))(wallabag_1.vorpal);
-function checkFile(fileName) {
+const checkFile = (fileName) => {
     const errorMessage = `bad file ${fileName}`;
     try {
         const stat = fs.statSync(fileName);
@@ -41,8 +43,8 @@ function checkFile(fileName) {
         wallabag_1.logger.error(errorMessage);
     }
     return false;
-}
-function normalizeData(data) {
+};
+const normalizeData = (data) => {
     const ldata = Object.assign({}, wallabag_api_1.defaultData);
     for (const key of Object.keys(data)) {
         if (key in ldata) {
@@ -55,18 +57,16 @@ function normalizeData(data) {
         }
     }
     return ldata;
-}
-function loadDataFromFile(file) {
-    return __awaiter(this, void 0, void 0, function* () {
-        return new Promise((resolve, reject) => {
-            fs.readFile(file, 'utf8', (err, data) => {
-                if (err) {
-                    reject(err);
-                }
-                else {
-                    resolve(JSON.parse(data));
-                }
-            });
+};
+const loadDataFromFile = (file) => __awaiter(this, void 0, void 0, function* () {
+    return new Promise((resolve, reject) => {
+        fs.readFile(file, 'utf8', (err, data) => {
+            if (err) {
+                reject(err);
+            }
+            else {
+                resolve(JSON.parse(data));
+            }
         });
     });
-}
+});

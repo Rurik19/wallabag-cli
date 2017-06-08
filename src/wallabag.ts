@@ -1,6 +1,7 @@
 import { WallabagApi, defaultData } from 'wallabag-api';
 import Vorpal = require('vorpal');
 import vorpalLog = require('vorpal-log');
+import { showInfo } from './commands/info';
 
 const api = new WallabagApi();
 const vorpal = new Vorpal();
@@ -8,7 +9,8 @@ const vorpal = new Vorpal();
 vorpal
     .use(vorpalLog)
     .delimiter('wallabag$')
-    .history('wallabag-cli');
+    .history('wallabag-cli')
+    .localStorage('wallabag-cli');
 
 const logger = vorpal.logger;
 
@@ -18,6 +20,20 @@ import './commands/version';
 import './commands/load';
 import './commands/save';
 import './commands/url';
+
+const loadLastSetup = () => {
+    try {
+        const lastSetup = vorpal.localStorage.getItem('lastSetup');
+        if (lastSetup) {
+             api.set(JSON.parse(lastSetup));
+             logger.info(`loaded last setup for ${api.get().url}`);
+        }
+    } catch (error) {
+        logger.error(error.message);
+    }
+};
+
+loadLastSetup();
 
 // ------ Entry points --------
 if (process.argv.slice(2).length > 0) {

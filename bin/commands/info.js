@@ -16,8 +16,11 @@ exports.showInfo = (prop) => {
             const date = new Date(info[key]);
             showData = `${date.toDateString()} ${date.toTimeString()}`;
         }
-        key === prop
-            && wallabag_1.logger.log(`${colors.yellow(key)} ${' '.repeat(20 - key.length)} ${showData}`)
-            || wallabag_1.logger.log(`${colors.green(key)} ${' '.repeat(20 - key.length)} ${showData}`);
+        if (key === prop) {
+            wallabag_1.logger.log(`${colors.yellow(key)} ${' '.repeat(20 - key.length)} ${showData}`);
+        }
+        else {
+            wallabag_1.logger.log(`${colors.green(key)} ${' '.repeat(20 - key.length)} ${showData}`);
+        }
     }
 };

@@ -10,7 +10,8 @@ exports.vorpal = vorpal;
 vorpal
     .use(vorpalLog)
     .delimiter('wallabag$')
-    .history('wallabag-cli');
+    .history('wallabag-cli')
+    .localStorage('wallabag-cli');
 const logger = vorpal.logger;
 exports.logger = logger;
 require("./commands/info");
@@ -18,6 +19,19 @@ require("./commands/version");
 require("./commands/load");
 require("./commands/save");
 require("./commands/url");
+const loadLastSetup = () => {
+    try {
+        const lastSetup = vorpal.localStorage.getItem('lastSetup');
+        if (lastSetup) {
+            api.set(JSON.parse(lastSetup));
+            logger.info(`loaded last setup for ${api.get().url}`);
+        }
+    }
+    catch (error) {
+        logger.error(error.message);
+    }
+};
+loadLastSetup();
 if (process.argv.slice(2).length > 0) {
     try {
         vorpal.parse(process.argv);
