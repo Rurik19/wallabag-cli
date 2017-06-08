@@ -44,7 +44,7 @@ const normalizeData = (data: object): object => {
         }
     }
     return ldata;
-}
+};
 
 const loadDataFromFile = async (file: string): Promise<any> =>  {
     return new Promise((resolve, reject) => {
@@ -56,4 +56,4 @@ const loadDataFromFile = async (file: string): Promise<any> =>  {
             }
         });
     });
-}
+};
