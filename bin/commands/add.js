@@ -23,13 +23,14 @@ const colors = require("colors/safe");
     }
 })
     .alias('a')
-    .action((args) => __awaiter(this, void 0, void 0, function* () {
+    .action((args, cb) => __awaiter(this, void 0, void 0, function* () {
     try {
         const article = yield wallabag_1.api.saveArticle(args.url);
         showArticle(article);
     }
-    catch (error) {
-        wallabag_1.logger.error(error.message);
+    catch (e) {
+        e.message && wallabag_1.logger.error(e.message);
+        e.error && wallabag_1.logger.error(`${e.error}: ${e.error_description}`);
     }
 })))(wallabag_1.vorpal);
 const showArticle = (article) => {

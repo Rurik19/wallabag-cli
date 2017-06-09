@@ -14,13 +14,15 @@ import colors = require('colors/safe');
         }
     })
     .alias('a')
-    .action(async args => {
+    .action(async (args, cb) => {
         try {
+//            console.log(typeof(api.saveArticle));
             const article = await api.saveArticle(args.url);
-            vorpal.localStorage.setItem('lastEntryId', article.id.toString());
+//            vorpal.localStorage.setItem('lastEntryId', article.id.toString());
             showArticle(article);
-        } catch (error) {
-            logger.error(error.message);
+        } catch (e) {
+	    e.message && logger.error(e.message);
+	    e.error && logger.error(`${e.error}: ${e.error_description}`);
         }
     })
 )(vorpal);
