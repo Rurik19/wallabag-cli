@@ -11,7 +11,7 @@ const prompt = inquirer.prompt;
     .option('-y, --yes', 'overwrite existing file')
     .alias('s')
     .action(async (args, cb) => {
-        const fileName = args.filename || defaultFileName;
+        const fileName = args.options.filename || defaultFileName;
         const exists = fs.existsSync(fileName);
         if ((args.options.yes) || (!exists)) {
            return await saveFile(fileName);

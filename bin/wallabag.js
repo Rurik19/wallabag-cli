@@ -20,6 +20,7 @@ require("./commands/load");
 require("./commands/save");
 require("./commands/url");
 require("./commands/add");
+require("./commands/token");
 try {
     const lastSetup = vorpal.localStorage.getItem('lastSetup');
     if (lastSetup) {
