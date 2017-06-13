@@ -1,5 +1,4 @@
 import { vorpal, api, logger } from '../globals';
-import { IWData } from 'wallabag-api';
 import { showInfo } from './info';
 
 const questions = [{
@@ -30,10 +29,9 @@ const questions = [{
          try {
              await api.getApplicationToken(u, p);
              vorpal.localStorage.setItem('lastSetup', JSON.stringify(api.get()));
-             if ( ! args.options.silent ) { showInfo(); }
+             args.options.silent || showInfo();
          } catch (e) {
-             e.message && logger.error(e.message);
-             e.error && logger.error(`${e.error}: ${e.error_description}`);
+             logger.error(e.message ? e.message : `${e.error}: ${e.error_description}`);
          }
     })
 )(vorpal);

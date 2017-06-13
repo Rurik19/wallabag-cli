@@ -37,12 +37,9 @@ const questions = [{
     try {
         yield globals_1.api.getApplicationToken(u, p);
         globals_1.vorpal.localStorage.setItem('lastSetup', JSON.stringify(globals_1.api.get()));
-        if (!args.options.silent) {
-            info_1.showInfo();
-        }
+        args.options.silent || info_1.showInfo();
     }
     catch (e) {
-        e.message && globals_1.logger.error(e.message);
-        e.error && globals_1.logger.error(`${e.error}: ${e.error_description}`);
+        globals_1.logger.error(e.message ? e.message : `${e.error}: ${e.error_description}`);
     }
 })))(globals_1.vorpal);

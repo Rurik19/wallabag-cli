@@ -26,11 +26,11 @@ const colors = require("colors/safe");
     .action((args, cb) => __awaiter(this, void 0, void 0, function* () {
     try {
         const article = yield globals_1.api.saveArticle(args.url);
+        globals_1.vorpal.localStorage.setItem('lastId', article.id);
         showArticle(article);
     }
     catch (e) {
-        e.message && globals_1.logger.error(e.message);
-        e.error && globals_1.logger.error(`${e.error}: ${e.error_description}`);
+        globals_1.logger.error(e.message ? e.message : `${e.error}: ${e.error_description}`);
     }
 })))(globals_1.vorpal);
 const showArticle = (article) => {

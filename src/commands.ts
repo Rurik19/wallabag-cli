@@ -6,3 +6,4 @@ import './commands/save';
 // import './commands/url';
 import './commands/add';
 import './commands/token';
+import './commands/star';
