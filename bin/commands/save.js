@@ -19,7 +19,7 @@ const prompt = inquirer.prompt;
     .option('-y, --yes', 'overwrite existing file')
     .alias('s')
     .action((args, cb) => __awaiter(this, void 0, void 0, function* () {
-    const fileName = args.filename || constants_1.defaultFileName;
+    const fileName = args.options.filename || constants_1.defaultFileName;
     const exists = fs.existsSync(fileName);
     if ((args.options.yes) || (!exists)) {
         return yield saveFile(fileName);
