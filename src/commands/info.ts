@@ -1,4 +1,4 @@
-import { vorpal, api, logger } from '../wallabag';
+import { vorpal, api, logger } from '../globals';
 import colors = require('colors/safe');
 
 ( v =>

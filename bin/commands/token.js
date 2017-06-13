@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const wallabag_1 = require("../wallabag");
+const globals_1 = require("../globals");
 const info_1 = require("./info");
 const questions = [{
         type: 'editor',
@@ -30,19 +30,19 @@ const questions = [{
     let u = args.options.user;
     let p = args.options.password;
     if (!u || !p) {
-        const answers = yield wallabag_1.vorpal.activeCommand.prompt(questions);
+        const answers = yield globals_1.vorpal.activeCommand.prompt(questions);
         u = answers.user;
         p = answers.password;
     }
     try {
-        yield wallabag_1.api.getApplicationToken(u, p);
-        wallabag_1.vorpal.localStorage.setItem('lastSetup', JSON.stringify(wallabag_1.api.get()));
+        yield globals_1.api.getApplicationToken(u, p);
+        globals_1.vorpal.localStorage.setItem('lastSetup', JSON.stringify(globals_1.api.get()));
         if (!args.options.silent) {
             info_1.showInfo();
         }
     }
     catch (e) {
-        e.message && wallabag_1.logger.error(e.message);
-        e.error && wallabag_1.logger.error(`${e.error}: ${e.error_description}`);
+        e.message && globals_1.logger.error(e.message);
+        e.error && globals_1.logger.error(`${e.error}: ${e.error_description}`);
     }
-})))(wallabag_1.vorpal);
+})))(globals_1.vorpal);

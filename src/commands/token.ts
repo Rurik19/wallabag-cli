@@ -1,4 +1,4 @@
-import { vorpal, api, logger } from '../wallabag';
+import { vorpal, api, logger } from '../globals';
 import { IWData } from 'wallabag-api';
 import { showInfo } from './info';
 

@@ -8,11 +8,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const wallabag_1 = require("../wallabag");
+const globals_1 = require("../globals");
 const fs = require("fs");
 const constants_1 = require("../constants");
-const inquirer = require("inquirer");
-const prompt = inquirer.prompt;
+const overwriteQuestion = {
+    type: 'confirm',
+    name: 'overwrite',
+    message: `file already exists. Overwrite it?`
+};
 (v => v
     .command('save', 'save wallabag setup to file or localStorage. default: file "wallabag.json"')
     .option('-f, --file <filename>', 'file to load options from')
@@ -24,18 +27,14 @@ const prompt = inquirer.prompt;
     if ((args.options.yes) || (!exists)) {
         return yield saveFile(fileName);
     }
-    const answer = yield prompt({
-        type: 'confirm',
-        name: 'overwrite',
-        message: `file ${fileName} exists. Overwrite it?`
-    });
+    const answer = yield globals_1.vorpal.activeCommand.prompt(overwriteQuestion);
     if (answer.overwrite) {
         return yield saveFile(fileName);
     }
-})))(wallabag_1.vorpal);
+})))(globals_1.vorpal);
 const saveFile = (filename) => __awaiter(this, void 0, void 0, function* () {
     return new Promise((resolve, reject) => {
-        fs.writeFile(filename, JSON.stringify(wallabag_1.api.get()), (err) => {
+        fs.writeFile(filename, JSON.stringify(globals_1.api.get()), (err) => {
             if (err) {
                 return reject(err);
             }

@@ -1,9 +1,12 @@
-import { vorpal, api, logger } from '../wallabag';
+import { vorpal, api, logger } from '../globals';
 import fs = require('fs');
 import { defaultFileName } from '../constants';
-import inquirer = require('inquirer');
 
-const prompt = inquirer.prompt;
+const overwriteQuestion = {
+            type: 'confirm',
+            name: 'overwrite',
+            message: `file already exists. Overwrite it?`
+        };
 
 ( v => v
     .command('save', 'save wallabag setup to file or localStorage. default: file "wallabag.json"')
@@ -16,11 +19,7 @@ const prompt = inquirer.prompt;
         if ((args.options.yes) || (!exists)) {
            return await saveFile(fileName);
         }
-        const answer = await prompt({
-            type: 'confirm',
-            name: 'overwrite',
-            message: `file ${fileName} exists. Overwrite it?`
-        });
+        const answer = await vorpal.activeCommand.prompt(overwriteQuestion);
         if (answer.overwrite) {
           return await saveFile(fileName);
         }

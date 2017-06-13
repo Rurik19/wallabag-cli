@@ -8,26 +8,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const wallabag_1 = require("../wallabag");
+const globals_1 = require("../globals");
 const valid_url_1 = require("valid-url");
 (v => v.command('version [url]', 'get api version')
     .alias('v')
     .validate((args) => {
-    const url = args.url || wallabag_1.api.get().url;
+    const url = args.url || globals_1.api.get().url;
     if (!valid_url_1.isWebUri(url)) {
-        wallabag_1.logger.error(`incorrect URL: ${url} `);
+        globals_1.logger.error(`incorrect URL: ${url} `);
         return false;
     }
     return true;
 })
     .action((args, cb) => __awaiter(this, void 0, void 0, function* () {
-    const checkurl = args.url || wallabag_1.api.get().url;
-    args.url || wallabag_1.logger.info(checkurl);
+    const checkurl = args.url || globals_1.api.get().url;
+    args.url || globals_1.logger.info(checkurl);
     try {
-        const ver = yield wallabag_1.api.getApiVersion(checkurl);
-        wallabag_1.logger.info(ver);
+        const ver = yield globals_1.api.getApiVersion(checkurl);
+        globals_1.logger.info(ver);
     }
     catch (error) {
-        wallabag_1.logger.error(error.message);
+        globals_1.logger.error(error.message);
     }
-})))(wallabag_1.vorpal);
+})))(globals_1.vorpal);

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const wallabag_api_1 = require("wallabag-api");
-const wallabag_1 = require("../wallabag");
+const globals_1 = require("../globals");
 const info_1 = require("./info");
 const fs = require("fs");
 const constants_1 = require("../constants");
@@ -22,12 +22,12 @@ const constants_1 = require("../constants");
     .action((args, cb) => __awaiter(this, void 0, void 0, function* () {
     const rawData = yield loadDataFromFile(args.options.file || constants_1.defaultFileName);
     const normData = normalizeData(rawData);
-    wallabag_1.api.set(normData);
-    wallabag_1.vorpal.localStorage.setItem('lastSetup', JSON.stringify(normData));
+    globals_1.api.set(normData);
+    globals_1.vorpal.localStorage.setItem('lastSetup', JSON.stringify(normData));
     if (!args.options.silent) {
         info_1.showInfo();
     }
-})))(wallabag_1.vorpal);
+})))(globals_1.vorpal);
 const checkFile = (fileName) => {
     const errorMessage = `bad file ${fileName}`;
     try {
@@ -36,11 +36,11 @@ const checkFile = (fileName) => {
             return true;
         }
         else {
-            wallabag_1.logger.error(errorMessage);
+            globals_1.logger.error(errorMessage);
         }
     }
     catch (e) {
-        wallabag_1.logger.error(errorMessage);
+        globals_1.logger.error(errorMessage);
     }
     return false;
 };

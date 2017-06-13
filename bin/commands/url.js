@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const wallabag_1 = require("../wallabag");
+const globals_1 = require("../globals");
 const valid_url_1 = require("valid-url");
 const info_1 = require("./info");
 (v => v
@@ -11,12 +11,12 @@ const info_1 = require("./info");
         return true;
     }
     else {
-        wallabag_1.logger.error(`url ${args.url} is incorrect`);
+        globals_1.logger.error(`url ${args.url} is incorrect`);
         return false;
     }
 })
     .action((args, callback) => {
-    wallabag_1.api.set({ url: args.url });
+    globals_1.api.set({ url: args.url });
     info_1.showInfo('url');
     callback();
-}))(wallabag_1.vorpal);
+}))(globals_1.vorpal);
