@@ -7,3 +7,6 @@ import './commands/save';
 import './commands/add';
 import './commands/token';
 import './commands/star';
+import './commands/archive';
+import './commands/tag';
+import './commands/article';

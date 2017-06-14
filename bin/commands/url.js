@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const globals_1 = require("../globals");
 const valid_url_1 = require("valid-url");
-const info_1 = require("./info");
+const cli_ui_1 = require("../cli-ui");
 (v => v
     .command('url [url]', 'show or set wallabag URL ')
     .alias('u')
@@ -17,6 +17,6 @@ const info_1 = require("./info");
 })
     .action((args, callback) => {
     globals_1.api.set({ url: args.url });
-    info_1.showInfo('url');
+    cli_ui_1.showInfo('url');
     callback();
 }))(globals_1.vorpal);

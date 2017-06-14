@@ -12,8 +12,7 @@ const globals_1 = require("../globals");
 const cli_ui_1 = require("../cli-ui");
 ((vorpal, api, logger) => {
     vorpal
-        .command('star [id]', 'star article by ID or the last one')
-        .option('--drop', 'clear star mark')
+        .command('article [id]', 'gets article by ID or the last one')
         .validate(args => {
         const id = args.id || parseInt(vorpal.localStorage.getItem('lastId'), 10);
         if (typeof (id) !== 'number') {
@@ -25,7 +24,7 @@ const cli_ui_1 = require("../cli-ui");
         .action((args) => __awaiter(this, void 0, void 0, function* () {
         try {
             const id = args.id || parseInt(vorpal.localStorage.getItem('lastId'), 10);
-            const article = yield api.saveStarred(id, !!args.options.drop ? 0 : 1);
+            const article = yield api.getArticle(id);
             vorpal.localStorage.setItem('lastId', article.id);
             cli_ui_1.showArticle(article);
         }

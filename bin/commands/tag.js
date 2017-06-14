@@ -12,20 +12,35 @@ const globals_1 = require("../globals");
 const cli_ui_1 = require("../cli-ui");
 ((vorpal, api, logger) => {
     vorpal
-        .command('star [id]', 'star article by ID or the last one')
-        .option('--drop', 'clear star mark')
+        .command('tag [id]', 'set tags fot article by ID or the last one; options --add or --drop must be set')
+        .option('--add <tagList>', 'clear star mark')
+        .option('--drop <tagList>', 'clear star mark')
         .validate(args => {
         const id = args.id || parseInt(vorpal.localStorage.getItem('lastId'), 10);
         if (typeof (id) !== 'number') {
             logger.error(`wrong article ID "${id}"`);
             return false;
         }
+        if (!(args.options.add || args.options.drop)) {
+            logger.error(`option --add or --drop must be set`);
+            return false;
+        }
+        if (args.options.add && args.options.drop) {
+            logger.error(`options --add and --drop cannot be set simulateonosly`);
+            return false;
+        }
         return true;
     })
         .action((args) => __awaiter(this, void 0, void 0, function* () {
+        logger.info(JSON.stringify(args));
         try {
             const id = args.id || parseInt(vorpal.localStorage.getItem('lastId'), 10);
-            const article = yield api.saveStarred(id, !!args.options.drop ? 0 : 1);
+            let article = yield api.getArticle(id);
+            const tagl = article.tags.map(t => t.label)
+                .concat(args.add.split(','))
+                .filter((x, i, a) => a.indexOf(x) === i)
+                .join(',');
+            article = yield api.saveTags(id, tagl);
             vorpal.localStorage.setItem('lastId', article.id);
             cli_ui_1.showArticle(article);
         }

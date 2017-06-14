@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const wallabag_api_1 = require("wallabag-api");
 const globals_1 = require("../globals");
-const info_1 = require("./info");
+const cli_ui_1 = require("../cli-ui");
 const fs = require("fs");
 const constants_1 = require("../constants");
 (v => v
@@ -25,7 +25,7 @@ const constants_1 = require("../constants");
     globals_1.api.set(normData);
     globals_1.vorpal.localStorage.setItem('lastSetup', JSON.stringify(normData));
     if (!args.options.silent) {
-        info_1.showInfo();
+        cli_ui_1.showInfo();
     }
 })))(globals_1.vorpal);
 const checkFile = (fileName) => {

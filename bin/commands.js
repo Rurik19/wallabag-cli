@@ -7,3 +7,6 @@ require("./commands/save");
 require("./commands/add");
 require("./commands/token");
 require("./commands/star");
+require("./commands/archive");
+require("./commands/tag");
+require("./commands/article");

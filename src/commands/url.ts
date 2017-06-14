@@ -1,6 +1,6 @@
 import { vorpal, api, logger } from '../globals';
 import { isWebUri } from 'valid-url';
-import { showInfo } from './info';
+import { showInfo } from '../cli-ui';
 
 ( v => v
     .command('url [url]', 'show or set wallabag URL ')

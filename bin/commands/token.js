@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const globals_1 = require("../globals");
-const info_1 = require("./info");
+const cli_ui_1 = require("../cli-ui");
 const questions = [{
         type: 'editor',
         name: 'user',
@@ -37,7 +37,7 @@ const questions = [{
     try {
         yield globals_1.api.getApplicationToken(u, p);
         globals_1.vorpal.localStorage.setItem('lastSetup', JSON.stringify(globals_1.api.get()));
-        args.options.silent || info_1.showInfo();
+        args.options.silent || cli_ui_1.showInfo();
     }
     catch (e) {
         globals_1.logger.error(e.message ? e.message : `${e.error}: ${e.error_description}`);

@@ -9,8 +9,8 @@
     "@types/node" "*"
 
 "@types/node@*", "@types/node@^7.0.23":
-  version "7.0.28"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.28.tgz#3a8c62b718a73bbb89ede4aba5ab12c8f822c36e"
+  version "7.0.31"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.31.tgz#80ea4d175599b2a00149c29a10a4eb2dff592e86"
 
 agent-base@2:
   version "2.1.1"
@@ -54,15 +54,15 @@ babel-runtime@^6.22.0:
     core-js "^2.4.0"
     regenerator-runtime "^0.10.0"
 
-balanced-match@^0.4.1:
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-0.4.2.tgz#cb3f3e3c732dc0f01ee70b403f302e61d7709838"
+balanced-match@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
 
 brace-expansion@^1.1.7:
-  version "1.1.7"
-  resolved "https://registry.yarnpkg.com/brace-expansion/-/brace-expansion-1.1.7.tgz#3effc3c50e000531fb720eaff80f0ae8ef23cf59"
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/brace-expansion/-/brace-expansion-1.1.8.tgz#c07b211c7c952ec1f8efd51a77ef0d1d3990a292"
   dependencies:
-    balanced-match "^0.4.1"
+    balanced-match "^1.0.0"
     concat-map "0.0.1"
 
 chalk@^1.0.0, chalk@^1.1.0, chalk@^1.1.1:
@@ -180,8 +180,8 @@ https-proxy-agent@^1.0.0:
     extend "3"
 
 iconv-lite@~0.4.13:
-  version "0.4.17"
-  resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.17.tgz#4fdaa3b38acbc2c031b045d0edcdfe1ecab18c8d"
+  version "0.4.18"
+  resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.18.tgz#23d8656b16aae6742ac29732ea8f0336a4789cf2"
 
 in-publish@^2.0.0:
   version "2.0.0"
@@ -375,8 +375,8 @@ tslib@^1.7.1:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.7.1.tgz#bc8004164691923a79fe8378bbeb3da2017538ec"
 
 tslint@^5.4.2:
-  version "5.4.2"
-  resolved "https://registry.yarnpkg.com/tslint/-/tslint-5.4.2.tgz#609b6640cc0424f4a395a9adf68c375563c549c7"
+  version "5.4.3"
+  resolved "https://registry.yarnpkg.com/tslint/-/tslint-5.4.3.tgz#761c8402b80e347b7733a04390a757b253580467"
   dependencies:
     babel-code-frame "^6.22.0"
     colors "^1.1.2"
@@ -390,12 +390,12 @@ tslint@^5.4.2:
     tsutils "^2.3.0"
 
 tsutils@^2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/tsutils/-/tsutils-2.3.0.tgz#96e661d7c2363f31adc8992ac67bbe7b7fc175e5"
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/tsutils/-/tsutils-2.4.0.tgz#ad4ce6dba0e5a3edbddf8626b7ca040782189fea"
 
 typescript@^2.3.4:
-  version "2.3.4"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.3.4.tgz#3d38321828231e434f287514959c37a82b629f42"
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.4.0.tgz#aef5a8d404beba36ad339abf079ddddfffba86dd"
 
 valid-url@^1.0.9:
   version "1.0.9"
@@ -423,8 +423,8 @@ vorpal@^1.12.0:
     wrap-ansi "^2.0.0"
 
 wallabag-api@^0.1.5:
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/wallabag-api/-/wallabag-api-0.1.5.tgz#52f9b84715341be6b08df76745051c88404949d7"
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/wallabag-api/-/wallabag-api-0.1.8.tgz#ff9615e673e516a292225feee0af3c3255e0ae20"
   dependencies:
     "@types/node-fetch" "^1.6.7"
     https-proxy-agent "^1.0.0"

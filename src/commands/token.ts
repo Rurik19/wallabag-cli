@@ -1,5 +1,5 @@
 import { vorpal, api, logger } from '../globals';
-import { showInfo } from './info';
+import { showInfo } from '../cli-ui';
 
 const questions = [{
     type: 'editor',

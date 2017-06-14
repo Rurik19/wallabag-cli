@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const globals_1 = require("../globals");
 const valid_url_1 = require("valid-url");
-const colors = require("colors/safe");
+const cli_ui_1 = require("../cli-ui");
 (cli => cli
     .command('add <url>', 'add page by URL to wallabag')
     .validate(args => {
@@ -27,19 +27,9 @@ const colors = require("colors/safe");
     try {
         const article = yield globals_1.api.saveArticle(args.url);
         globals_1.vorpal.localStorage.setItem('lastId', article.id);
-        showArticle(article);
+        cli_ui_1.showArticle(article);
     }
     catch (e) {
         globals_1.logger.error(e.message ? e.message : `${e.error}: ${e.error_description}`);
     }
 })))(globals_1.vorpal);
-const showArticle = (article) => {
-    const starStr = article.is_starred ? colors.magenta('starred') : 'no-starred';
-    const archStr = article.is_archived ? colors.magenta('archived') : 'no-arhived';
-    const urlStr = colors.grey(article.url);
-    const tagsStr = article.tags.length === 0 ? 'no-tags'
-        : `tags: ${colors.green(article.tags.map(t => t.label).join(' '))}`;
-    globals_1.logger.log(`${colors.yellow(article.id)} ${colors.cyan(article.title)}
-${urlStr}
-${starStr} ${archStr} ${tagsStr}`);
-};

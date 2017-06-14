@@ -12,20 +12,20 @@ const globals_1 = require("../globals");
 const cli_ui_1 = require("../cli-ui");
 ((vorpal, api, logger) => {
     vorpal
-        .command('star [id]', 'star article by ID or the last one')
-        .option('--drop', 'clear star mark')
+        .command('arch [id]', 'archive article by ID or the last one')
+        .option('--drop', 'clear archive mark')
         .validate(args => {
         const id = args.id || parseInt(vorpal.localStorage.getItem('lastId'), 10);
-        if (typeof (id) !== 'number') {
-            logger.error(`wrong article ID "${id}"`);
-            return false;
+        if (typeof (id) === 'number') {
+            return true;
         }
-        return true;
+        logger.error(`wrong article ID ${id}`);
+        return false;
     })
         .action((args) => __awaiter(this, void 0, void 0, function* () {
         try {
             const id = args.id || parseInt(vorpal.localStorage.getItem('lastId'), 10);
-            const article = yield api.saveStarred(id, !!args.options.drop ? 0 : 1);
+            const article = yield api.saveArchived(id, !!args.options.drop ? 0 : 1);
             vorpal.localStorage.setItem('lastId', article.id);
             cli_ui_1.showArticle(article);
         }
