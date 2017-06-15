@@ -1,5 +1,5 @@
 import { vorpal, api, logger } from '../globals';
-import fs = require('fs');
+import * as fs from 'fs';
 import { defaultFileName } from '../constants';
 
 const overwriteQuestion = {

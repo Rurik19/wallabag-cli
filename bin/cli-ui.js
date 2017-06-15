@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const globals_1 = require("./globals");
 const colors = require("colors/safe");
-exports.showArticle = (article) => {
+const showArticle = (article) => {
     const starStr = article.is_starred ? colors.magenta('starred') : 'no-starred';
     const archStr = article.is_archived ? colors.magenta('archived') : 'no-arhived';
     const urlStr = colors.grey(article.url);
@@ -12,7 +12,8 @@ exports.showArticle = (article) => {
 ${urlStr}
 ${starStr} ${archStr} ${tagsStr}`);
 };
-exports.showInfo = (prop) => {
+exports.showArticle = showArticle;
+const showInfo = (prop) => {
     const info = globals_1.api.get();
     for (const key of Object.keys(info)) {
         let showData = info[key];
@@ -28,3 +29,4 @@ exports.showInfo = (prop) => {
         }
     }
 };
+exports.showInfo = showInfo;

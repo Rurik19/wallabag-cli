@@ -1,7 +1,7 @@
 import { vorpal, api, logger } from '../globals';
 import { isWebUri } from 'valid-url';
 import { IWData } from 'wallabag-api';
-import colors = require('colors/safe');
+import * as colors from 'colors/safe';
 import { showArticle } from '../cli-ui';
 
 ( cli => cli

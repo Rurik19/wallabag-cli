@@ -1,7 +1,7 @@
 import { defaultData } from 'wallabag-api';
 import { vorpal, api, logger } from '../globals';
 import { showInfo } from '../cli-ui';
-import fs = require('fs');
+import * as fs from 'fs';
 import { recodeObj, defaultFileName } from '../constants';
 
 ( v => v

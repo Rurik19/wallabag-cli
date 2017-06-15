@@ -1,7 +1,7 @@
 import { logger, api } from './globals';
-import colors = require('colors/safe');
+import * as colors from 'colors/safe';
 
-export const showArticle = (article: any): void => {
+const showArticle = (article: any): void => {
     const starStr = article.is_starred ? colors.magenta('starred') : 'no-starred';
     const archStr = article.is_archived ? colors.magenta('archived') : 'no-arhived';
     const urlStr = colors.grey(article.url);
@@ -12,7 +12,7 @@ ${urlStr}
 ${starStr} ${archStr} ${tagsStr}`);
 };
 
-export const showInfo = (prop?: string): void =>  {
+const showInfo = (prop?: string): void =>  {
     const info = api.get() as object;
     for (const key of Object.keys(info)) {
         let showData = info[key];
@@ -27,3 +27,5 @@ export const showInfo = (prop?: string): void =>  {
         }
     }
 };
+
+export { showArticle, showInfo};

@@ -1,5 +1,4 @@
 import { vorpal, api, logger } from '../globals';
-import colors = require('colors/safe');
 import { showInfo } from '../cli-ui';
 
 ( v =>
