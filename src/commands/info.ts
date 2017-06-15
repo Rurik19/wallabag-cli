@@ -1,11 +1,9 @@
-import { vorpal, api, logger } from '../globals';
-import { showInfo } from '../cli-ui';
+import { vorpal } from '../globals';
+import { action } from './actions/info-action';
 
-( v =>
-    v.command('info', 'shows wallabag api data')
+( () =>
+    vorpal
+     .command('info', 'shows wallabag api data')
      .alias('i')
-     .action((args, callback) => {
-            showInfo();
-            callback();
-      })
-)(vorpal);
+     .action( action )
+)();
