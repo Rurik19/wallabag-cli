@@ -1,5 +1,12 @@
 import * as fs from 'fs';
-import { logger } from '../globals';
+import { api, logger } from '../globals';
+
+const checkExists = (fileName: string): boolean => {
+    try {
+       return fs.statSync(fileName).isFile();
+    } catch (e) { logger.error(JSON.stringify(e)); }
+    return false;
+};
 
 const checkFile = (fileName: string): boolean => {
     try {
@@ -24,4 +31,13 @@ const loadDataFromFile = async (file: string): Promise<any> =>  {
     });
 };
 
-export { checkFile, loadDataFromFile };
+const saveFile = async (filename: string): Promise<any> => {
+    return new Promise((resolve, reject) => {
+        fs.writeFile(filename, JSON.stringify(api.get()), (err) => {
+            if (err) { return reject(err); }
+            return resolve();
+        });
+    });
+};
+
+export { checkFile, loadDataFromFile, saveFile, checkExists };

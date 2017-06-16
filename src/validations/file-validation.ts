@@ -1,5 +1,5 @@
 import { defaultFileName } from '../constants';
-import { checkFile } from '../utils/file-utils';
+import { checkFile } from '../utils/fs-utils';
 
 const validate = args => checkFile(args.options.file || defaultFileName);
 

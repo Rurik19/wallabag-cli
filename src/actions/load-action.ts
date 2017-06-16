@@ -2,7 +2,7 @@ import { vorpal, api } from '../globals';
 import { showInfo } from '../cli-ui';
 import { defaultFileName } from '../constants';
 import { normalizeData } from '../utils/normalize';
-import { loadDataFromFile } from '../utils/file-utils';
+import { loadDataFromFile } from '../utils/fs-utils';
 
 const action = async (args, cb) => {
         const rawData = await loadDataFromFile(args.options.file || defaultFileName);

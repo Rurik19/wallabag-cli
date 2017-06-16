@@ -8,18 +8,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const globals_1 = require("../globals");
-const cli_ui_1 = require("../cli-ui");
-const constants_1 = require("../constants");
-const normalize_1 = require("../utils/normalize");
 const fs_utils_1 = require("../utils/fs-utils");
+const constants_1 = require("../constants");
+const globals_1 = require("../globals");
+const overwriteQuestion = {
+    type: 'confirm',
+    name: 'overwrite',
+    message: `file already exists. Overwrite it?`
+};
 const action = (args, cb) => __awaiter(this, void 0, void 0, function* () {
-    const rawData = yield fs_utils_1.loadDataFromFile(args.options.file || constants_1.defaultFileName);
-    const normData = normalize_1.normalizeData(rawData);
-    globals_1.api.set(normData);
-    globals_1.vorpal.localStorage.setItem('lastSetup', JSON.stringify(normData));
-    if (!args.options.silent) {
-        cli_ui_1.showInfo();
+    const fileName = args.options.filename || constants_1.defaultFileName;
+    const exists = fs_utils_1.checkExists(fileName);
+    if ((args.options.yes) || (!exists)) {
+        return yield fs_utils_1.saveFile(fileName);
+    }
+    const answer = yield globals_1.vorpal.activeCommand.prompt(overwriteQuestion);
+    if (answer.overwrite) {
+        return yield fs_utils_1.saveFile(fileName);
     }
 });
 exports.action = action;
