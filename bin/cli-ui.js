@@ -13,6 +13,13 @@ ${urlStr}
 ${starStr} ${archStr} ${tagsStr}`);
 };
 exports.showArticle = showArticle;
+const showArticles = (articles) => {
+    articles.map(article => {
+        showArticle(article);
+        globals_1.logger.log('-'.repeat(80));
+    });
+};
+exports.showArticles = showArticles;
 const showInfo = (prop) => {
     const info = globals_1.api.get();
     for (const key of Object.keys(info)) {

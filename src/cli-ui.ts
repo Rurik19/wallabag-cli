@@ -12,6 +12,13 @@ ${urlStr}
 ${starStr} ${archStr} ${tagsStr}`);
 };
 
+const showArticles = (articles: any[]) => {
+    articles.map(article => {
+        showArticle(article);
+        logger.log('-'.repeat(80));
+    });
+};
+
 const showInfo = (prop?: string): void =>  {
     const info = api.get() as object;
     for (const key of Object.keys(info)) {
@@ -28,4 +35,4 @@ const showInfo = (prop?: string): void =>  {
     }
 };
 
-export { showArticle, showInfo};
+export { showArticle, showArticles, showInfo};

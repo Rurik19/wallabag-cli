@@ -1,18 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const globals_1 = require("./globals");
-((vorpal, api, logger) => {
+(() => {
     try {
-        const lastSetup = vorpal.localStorage.getItem('lastSetup');
+        const lastSetup = globals_1.vorpal.localStorage.getItem('lastSetup');
         if (!lastSetup) {
             return;
         }
-        api.set(JSON.parse(lastSetup));
-        logger.info(`loaded setup for ${api.get().url}`);
-        const lastId = vorpal.localStorage.getItem('lastId');
-        lastId && logger.info(`last articler ID was ${lastId}`);
+        globals_1.api.set(JSON.parse(lastSetup));
+        globals_1.logger.info(`loaded setup for ${globals_1.api.get().url}`);
+        const lastId = globals_1.vorpal.localStorage.getItem('lastId');
+        lastId && globals_1.logger.info(`last articler ID was ${lastId}`);
     }
     catch (error) {
-        logger.error(error.message);
+        globals_1.logger.error(error.message);
     }
-})(globals_1.vorpal, globals_1.api, globals_1.logger);
+})();
