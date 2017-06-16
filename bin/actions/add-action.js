@@ -8,8 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const globals_1 = require("../../globals");
-const cli_ui_1 = require("../../cli-ui");
+const globals_1 = require("../globals");
+const cli_ui_1 = require("../cli-ui");
 exports.action = (args, cb) => __awaiter(this, void 0, void 0, function* () {
     try {
         const article = yield globals_1.api.saveArticle(args.url);

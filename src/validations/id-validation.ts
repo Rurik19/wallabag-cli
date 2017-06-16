@@ -1,4 +1,4 @@
-import { vorpal, api, logger } from '../../globals';
+import { vorpal, api, logger } from '../globals';
 
 export const validate = args => {
     const id = args.id || parseInt(vorpal.localStorage.getItem('lastId'), 10);

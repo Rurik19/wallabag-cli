@@ -1,6 +1,6 @@
 import { vorpal, api, logger } from '../globals';
 import { showInfo } from '../cli-ui';
-import { action } from './actions/token-acion';
+import { action } from '../actions/token-acion';
 
 (() => vorpal
     .command('token', 'get new application and refresh tokens')

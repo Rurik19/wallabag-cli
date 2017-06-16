@@ -1,61 +1,12 @@
-import { defaultData } from 'wallabag-api';
-import { vorpal, api, logger } from '../globals';
-import { showInfo } from '../cli-ui';
-import * as fs from 'fs';
-import { recodeObj, defaultFileName } from '../constants';
+import { vorpal } from '../globals';
+import { validate } from '../validations/file-validation';
+import { action } from '../actions/load-action';
 
-( v => v
+(() => vorpal
     .command('load', 'load wallabag setup from file or localStorage. default: file "wallabag.json"')
     .option('-f, --file <filename>', 'file to load options from')
     .option('-s, --silent', 'don\'t show options after load' )
     .alias('l')
-    .validate( args => checkFile(args.options.file || defaultFileName) )
-    .action(async (args, cb) => {
-        const rawData = await loadDataFromFile(args.options.file || defaultFileName);
-        const normData = normalizeData(rawData);
-        api.set(normData);
-        vorpal.localStorage.setItem('lastSetup', JSON.stringify(normData));
-        if ( ! args.options.silent ) { showInfo(); }
-     })
-)(vorpal);
-
-const checkFile = (fileName: string): boolean => {
-    const errorMessage = `bad file ${fileName}`;
-    try {
-        const stat = fs.statSync(fileName);
-        if (stat.isFile()) {
-            return true;
-        } else {
-            logger.error(errorMessage);
-        }
-    } catch (e) {
-        logger.error(errorMessage);
-    }
-    return false;
-};
-
-const normalizeData = (data: object): object => {
-    const ldata = {...defaultData };
-    for (const key of Object.keys(data)) {
-        if (key in ldata) {
-            ldata[key] = data[key];
-        } else {
-            if (key in recodeObj) {
-                ldata[recodeObj[key]] = data[key];
-            }
-        }
-    }
-    return ldata;
-};
-
-const loadDataFromFile = async (file: string): Promise<any> =>  {
-    return new Promise((resolve, reject) => {
-        fs.readFile(file, 'utf8', (err, data) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(JSON.parse(data));
-            }
-        });
-    });
-};
+    .validate( validate )
+    .action( action )
+)();

@@ -1,5 +1,5 @@
-import { vorpal, api, logger } from '../../globals';
-import { showInfo } from '../../cli-ui';
+import { vorpal, api, logger } from '../globals';
+import { showInfo } from '../cli-ui';
 
 const questions = [{ type: 'editor',   name: 'user',     message: 'Enter username: '},
                    { type: 'password', name: 'password', message: 'Enter password: '}];

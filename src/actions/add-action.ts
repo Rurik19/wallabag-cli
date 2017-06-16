@@ -1,5 +1,5 @@
-import { vorpal, api, logger } from '../../globals';
-import { showArticle } from '../../cli-ui';
+import { vorpal, api, logger } from '../globals';
+import { showArticle } from '../cli-ui';
 
 export const action = async (args, cb) => {
     try {

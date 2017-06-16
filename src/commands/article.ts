@@ -1,6 +1,6 @@
 import { vorpal } from '../globals';
-import { validate } from './validations/id-validation';
-import { action } from './actions/article-action';
+import { validate } from '../validations/id-validation';
+import { action } from '../actions/article-action';
 
 (() =>
     vorpal

@@ -1,4 +1,4 @@
-import { showInfo } from '../../cli-ui';
+import { showInfo } from '../cli-ui';
 
 export const action = (args, callback) => {
             showInfo();

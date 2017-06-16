@@ -1,72 +1,12 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const wallabag_api_1 = require("wallabag-api");
 const globals_1 = require("../globals");
-const cli_ui_1 = require("../cli-ui");
-const fs = require("fs");
-const constants_1 = require("../constants");
-(v => v
+const file_validation_1 = require("../validations/file-validation");
+const load_action_1 = require("../actions/load-action");
+(() => globals_1.vorpal
     .command('load', 'load wallabag setup from file or localStorage. default: file "wallabag.json"')
     .option('-f, --file <filename>', 'file to load options from')
     .option('-s, --silent', 'don\'t show options after load')
     .alias('l')
-    .validate(args => checkFile(args.options.file || constants_1.defaultFileName))
-    .action((args, cb) => __awaiter(this, void 0, void 0, function* () {
-    const rawData = yield loadDataFromFile(args.options.file || constants_1.defaultFileName);
-    const normData = normalizeData(rawData);
-    globals_1.api.set(normData);
-    globals_1.vorpal.localStorage.setItem('lastSetup', JSON.stringify(normData));
-    if (!args.options.silent) {
-        cli_ui_1.showInfo();
-    }
-})))(globals_1.vorpal);
-const checkFile = (fileName) => {
-    const errorMessage = `bad file ${fileName}`;
-    try {
-        const stat = fs.statSync(fileName);
-        if (stat.isFile()) {
-            return true;
-        }
-        else {
-            globals_1.logger.error(errorMessage);
-        }
-    }
-    catch (e) {
-        globals_1.logger.error(errorMessage);
-    }
-    return false;
-};
-const normalizeData = (data) => {
-    const ldata = Object.assign({}, wallabag_api_1.defaultData);
-    for (const key of Object.keys(data)) {
-        if (key in ldata) {
-            ldata[key] = data[key];
-        }
-        else {
-            if (key in constants_1.recodeObj) {
-                ldata[constants_1.recodeObj[key]] = data[key];
-            }
-        }
-    }
-    return ldata;
-};
-const loadDataFromFile = (file) => __awaiter(this, void 0, void 0, function* () {
-    return new Promise((resolve, reject) => {
-        fs.readFile(file, 'utf8', (err, data) => {
-            if (err) {
-                reject(err);
-            }
-            else {
-                resolve(JSON.parse(data));
-            }
-        });
-    });
-});
+    .validate(file_validation_1.validate)
+    .action(load_action_1.action))();

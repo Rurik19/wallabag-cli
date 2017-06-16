@@ -1,5 +1,5 @@
 import { vorpal } from '../globals';
-import { action } from './actions/info-action';
+import { action } from '../actions/info-action';
 
 ( () =>
     vorpal

@@ -1,5 +1,5 @@
 import { isWebUri } from 'valid-url';
-import { logger } from '../../globals';
+import { logger } from '../globals';
 
 export const validate = (args) => {
     if (isWebUri(args.url)) {
