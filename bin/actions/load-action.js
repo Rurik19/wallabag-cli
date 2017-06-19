@@ -12,12 +12,14 @@ const globals_1 = require("../globals");
 const cli_ui_1 = require("../cli-ui");
 const constants_1 = require("../constants");
 const normalize_1 = require("../utils/normalize");
+const version_1 = require("../utils/version");
 const fs_utils_1 = require("../utils/fs-utils");
 const action = (args, cb) => __awaiter(this, void 0, void 0, function* () {
     const rawData = yield fs_utils_1.loadDataFromFile(args.options.file || constants_1.defaultFileName);
     const normData = normalize_1.normalizeData(rawData);
     globals_1.api.set(normData);
     globals_1.vorpal.localStorage.setItem('lastSetup', JSON.stringify(normData));
+    yield version_1.checkVersion(true, true);
     if (!args.options.silent) {
         cli_ui_1.showInfo();
     }

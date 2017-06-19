@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const globals_1 = require("./globals");
-const TOption;
 const commandsFactory = (command, description, alias, options, validationType) => {
     const name = command.split(' ')[0];
     const commandObj = globals_1.vorpal.command(command);
@@ -9,7 +8,7 @@ const commandsFactory = (command, description, alias, options, validationType) =
     alias && commandObj.alias(alias);
     validationType && commandObj.validate(validationFactory(validationType));
     options && options.map(opt => {
-        commandObj.option(opt.option, opt.description);
+        commandObj.option(opt[0], opt[1]);
     });
     commandObj.action(actionFactory(name));
 };

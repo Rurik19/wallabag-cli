@@ -4,8 +4,8 @@ import './commands';
 import { commandsFactory } from './factory';
 
 commandsFactory('articles', 'get articles by filters and pages', 'ag',
-               [['--page -pg <pageNo>', 'page number'],
-                ['--per-page -pp <pageNo>', 'articles per page']]
+               [['--page --pg <pageNo>', 'page number'],
+                ['--per-page --pp <pageNo>', 'articles per page']]
                 );
 
 // ------ Entry point --------

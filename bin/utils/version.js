@@ -9,14 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const globals_1 = require("../globals");
-const version_1 = require("../utils/version");
-const action = (args, cb) => __awaiter(this, void 0, void 0, function* () {
-    const checkurl = args.url || globals_1.api.get().url;
-    try {
-        yield version_1.checkVersion(!args.url);
-    }
-    catch (error) {
-        globals_1.logger.error(error.message);
+const checkVersion = (save = true, silent = false) => __awaiter(this, void 0, void 0, function* () {
+    const ver = yield globals_1.api.getApiVersion(globals_1.api.get().url);
+    silent || globals_1.logger.info(ver);
+    if (save) {
+        globals_1.api.set({ version: ver });
+        globals_1.vorpal.localStorage.setItem('lastSetup', JSON.stringify(globals_1.api.get()));
     }
 });
-exports.action = action;
+exports.checkVersion = checkVersion;
