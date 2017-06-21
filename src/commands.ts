@@ -10,3 +10,4 @@ import './commands/star';
 import './commands/archive';
 import './commands/tag';
 import './commands/article';
+import './commands/articles';

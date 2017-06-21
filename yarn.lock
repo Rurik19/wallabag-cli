@@ -9,8 +9,8 @@
     "@types/node" "*"
 
 "@types/node@*", "@types/node@^7.0.23":
-  version "7.0.31"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.31.tgz#80ea4d175599b2a00149c29a10a4eb2dff592e86"
+  version "7.0.32"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.32.tgz#6afe6c66520a4c316623a14aef123908d01b4bba"
 
 agent-base@2:
   version "2.1.1"
@@ -423,8 +423,8 @@ vorpal@^1.12.0:
     wrap-ansi "^2.0.0"
 
 wallabag-api@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/wallabag-api/-/wallabag-api-0.2.0.tgz#7dde3cae1a388d23a56807228c2159dc54796faa"
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/wallabag-api/-/wallabag-api-0.2.3.tgz#fda47827ec12e38958836d114938f70c6d5633b5"
   dependencies:
     "@types/node-fetch" "^1.6.7"
     https-proxy-agent "^1.0.0"

@@ -10,3 +10,4 @@ require("./commands/star");
 require("./commands/archive");
 require("./commands/tag");
 require("./commands/article");
+require("./commands/articles");

@@ -13,11 +13,14 @@ const cli_ui_1 = require("../cli-ui");
 exports.action = (args) => __awaiter(this, void 0, void 0, function* () {
     globals_1.logger.info(JSON.stringify(args));
     try {
-        let filter = {};
-        if (args.page) {
-            filter = Object.assign({}, filter, { page: args.page });
+        if (args.options.starred) {
+            args.options.starred = 1;
         }
-        const articles = yield globals_1.api.getArticles(filter);
+        if (args.options.archived) {
+            args.options.archived = 1;
+        }
+        globals_1.logger.info(JSON.stringify(args));
+        const articles = yield globals_1.api.getArticles(args.options);
         cli_ui_1.showArticles(articles._embedded.items);
     }
     catch (e) {
