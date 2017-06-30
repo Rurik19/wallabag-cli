@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const globals_1 = require("./globals");
-const colors = require("colors/safe");
+const colors = require("chalk");
 const showArticle = (article) => {
     const starStr = article.is_starred ? colors.magenta('starred') : 'no-starred';
     const archStr = article.is_archived ? colors.magenta('archived') : 'no-arhived';

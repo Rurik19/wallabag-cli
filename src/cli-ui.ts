@@ -1,5 +1,5 @@
 import { logger, api } from './globals';
-import * as colors from 'colors/safe';
+import * as colors from 'chalk';
 
 const showArticle = (article: any): void => {
     const starStr = article.is_starred ? colors.magenta('starred') : 'no-starred';
