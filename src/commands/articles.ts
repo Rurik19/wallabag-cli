@@ -1,4 +1,3 @@
-
 import { commandsFactory } from '../factory';
 
 commandsFactory('articles', 'get articles by filters and pages', 'ag',

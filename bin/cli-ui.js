@@ -22,7 +22,7 @@ const showArticles = (articles) => {
 exports.showArticles = showArticles;
 const showInfo = (prop) => {
     const info = globals_1.api.get();
-    for (const key of Object.keys(info)) {
+    for (const key in info) {
         let showData = info[key];
         if (((key === "expireDate") || (key === "refreshExpireDate")) && (info[key] !== null)) {
             const date = new Date(info[key]);

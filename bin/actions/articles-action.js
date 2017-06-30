@@ -19,7 +19,6 @@ exports.action = (args) => __awaiter(this, void 0, void 0, function* () {
         if (args.options.archived) {
             args.options.archived = 1;
         }
-        globals_1.logger.info(JSON.stringify(args));
         const articles = yield globals_1.api.getArticles(args.options);
         cli_ui_1.showArticles(articles._embedded.items);
     }

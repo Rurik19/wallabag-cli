@@ -21,7 +21,8 @@ const showArticles = (articles: any[]) => {
 
 const showInfo = (prop?: string): void =>  {
     const info = api.get() as object;
-    for (const key of Object.keys(info)) {
+    // tslint:disable-next-line:forin
+    for (const key in info) {
         let showData = info[key];
         if (((key === "expireDate") || (key === "refreshExpireDate")) && (info[key] !== null)) {
             const date = new Date(info[key]);

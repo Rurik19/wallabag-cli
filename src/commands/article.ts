@@ -1,10 +1,3 @@
-import { vorpal } from '../globals';
-import { validate } from '../validations/id-validation';
-import { action } from '../actions/article-action';
+import { commandsFactory } from '../factory';
 
-(() =>
-    vorpal
-        .command('article [id]', 'gets article by ID or the last one')
-        .validate( validate )
-        .action( action)
-)();
+commandsFactory('article [id]', 'gets article by ID or the last one', 'a', null, 'id');
