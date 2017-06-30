@@ -1,10 +1,3 @@
-import { vorpal, api, logger } from '../globals';
-import { validate } from '../validations/url-validation';
-import { action } from '../actions/version-action';
+import { commandsFactory } from '../factory';
 
-(() => vorpal
-        .command('version [url]', 'get api version')
-        .alias('v')
-        .validate( validate )
-        .action( action)
-)();
+commandsFactory('version [url]', 'get api version', 'v', null, 'url');
